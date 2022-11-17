@@ -5,7 +5,7 @@ function loadTodo(e) {
 	e.preventDefault();
 	
 	for (let i = 0; i < form.elements.length; i++) {
-		form.elements[i].readOnly = true;
+		form.elements[i].disabled = true;
 	}
 	
 	var apiTokenHelpElement = document.getElementById('api-token-help');
@@ -72,6 +72,10 @@ function loadTodo(e) {
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4) {
 			loadingElement.style.display = 'none';
+			
+			for (let i = 0; i < form.elements.length; i++) {
+				form.elements[i].disabled = false;
+			}
 
 			const todoObj = JSON.parse(JSON.parse(this.responseText).contents);
 
@@ -120,9 +124,6 @@ function loadTodo(e) {
 
 				courseListElement.appendChild(courseTodoListElement);
 				courseListElement.innerHTML += '<br />';
-			}
-			for (let i = 0; i < form.elements.length; i++) {
-				form.elements[i].readOnly = false;
 			}
 		}
 	};
