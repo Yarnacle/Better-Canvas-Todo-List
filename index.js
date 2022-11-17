@@ -2,6 +2,8 @@ document.getElementById('load-data-form').addEventListener('submit',loadTodo);
 
 function loadTodo(e) {
 	e.preventDefault();
+	
+	document.body.removeChild(document.getElementById('api-token-help'));
 
 	var courseListElement = document.getElementById('course-list');
 
