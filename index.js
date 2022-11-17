@@ -1,9 +1,17 @@
-document.getElementById('load-data-form').addEventListener('submit',loadTodo);
+var form = document.getElementById('load-data-form');
+form.addEventListener('submit',loadTodo);
 
 function loadTodo(e) {
 	e.preventDefault();
 	
-	document.body.removeChild(document.getElementById('api-token-help'));
+	for (let i = 0; i < form.elements.length; i++) {
+		form.elements[i].readOnly = true;
+	}
+	
+	var apiTokenHelpElement = document.getElementById('api-token-help');
+	if (apiTokenHelpElement) {
+		document.body.removeChild(apiTokenHelpElement);
+	}
 
 	var courseListElement = document.getElementById('course-list');
 
@@ -112,6 +120,9 @@ function loadTodo(e) {
 
 				courseListElement.appendChild(courseTodoListElement);
 				courseListElement.innerHTML += '<br />';
+			}
+			for (let i = 0; i < form.elements.length; i++) {
+				form.elements[i].readOnly = false;
 			}
 		}
 	};
