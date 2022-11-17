@@ -1,6 +1,12 @@
 var form = document.getElementById('load-data-form');
 form.addEventListener('submit',loadTodo);
 
+function enableForm() {
+	for (let i = 0; i < form.elements.length; i++) {
+		form.elements[i].disabled = false;
+	}
+}
+
 function loadTodo(e) {
 	e.preventDefault();
 	
@@ -29,6 +35,7 @@ function loadTodo(e) {
 		for (let i = 0; i < messages.length; i++) {
 			errorListElement.innerHTML += `<li>${messages[i]}</li>`;
 		}
+		enableForm();
 		throw new Error('Invalid form input');
 	}
 
@@ -50,10 +57,6 @@ function loadTodo(e) {
 	}
 	if (instanceField.style.borderColor == 'red') {
 		instanceField.style.removeProperty('border');
-	}
-	
-	for (let i = 0; i < form.elements.length; i++) {
-		form.elements[i].disabled = false;
 	}
 
 	if (!instance) {
@@ -93,7 +96,9 @@ function loadTodo(e) {
 			if (todoObj.message) {
 				error(tokenField,[todoObj.message]);
 			}
-
+			
+			enableForm();
+			
 			const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 			let simplifiedTodoObj = {};
