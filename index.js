@@ -51,6 +51,10 @@ function loadTodo(e) {
 	if (instanceField.style.borderColor == 'red') {
 		instanceField.style.removeProperty('border');
 	}
+	
+	for (let i = 0; i < form.elements.length; i++) {
+		form.elements[i].disabled = false;
+	}
 
 	if (!instance) {
 		error(instanceField,['invalid instance'])
@@ -72,10 +76,6 @@ function loadTodo(e) {
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4) {
 			loadingElement.style.display = 'none';
-			
-			for (let i = 0; i < form.elements.length; i++) {
-				form.elements[i].disabled = false;
-			}
 
 			const todoObj = JSON.parse(JSON.parse(this.responseText).contents);
 
