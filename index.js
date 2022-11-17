@@ -114,6 +114,8 @@ function loadTodo(e) {
 		}
 	};
 	xhttp.open('get',`https://api.allorigins.win/get?url=${encodeURIComponent('https://' + instance + '.instructure.com/api/v1/users/self/todo')}?access_token=${token}`);
+	xhttp.setRequestHeader('Cache-Control','no-cache,no-store,max-age=0');
+	xhttp.setRequestHeader('Pragma','no-cache');
 	xhttp.send();
 	loadingElement.style.display = 'inline';
 }
