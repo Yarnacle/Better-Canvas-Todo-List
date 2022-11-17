@@ -1,0 +1,16 @@
+a {
+	color: blue;
+}
+
+a[target=_blank]:after {
+	content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAF9JREFUKFOd0NENgCAMRdH7NmE0mUw3w01qGhEqAT/sH/SkzatYlllsCd4fIHVgG7D7u8LYfFhD2fECRqTDt07giO4NA7QEFCCDT+o1m5hAZwhkHvAjTAv1C67PXqPoAii9LAO96tF+AAAAAElFTkSuQmCC);
+}
+
+#loading {
+	display: none;
+	vertical-align: middle;
+}
+
+#error {
+	color: red;
+}
