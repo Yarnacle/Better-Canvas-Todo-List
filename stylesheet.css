@@ -28,7 +28,9 @@ a[target=_blank]:active:after {
 }
 
 .error {
-	border: 1px solid red;
+	border: 2px solid red;
+	border-radius: 3px;
+	background-color: lightpink;
 }
 
 input {
