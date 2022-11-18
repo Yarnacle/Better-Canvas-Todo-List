@@ -27,7 +27,7 @@ function loadTodo(e) {
 		if (courseListElement) {
 			content.removeChild(courseListElement);
 		}
-		field.style.borderColor = 'red';
+		field.setAttribute('class','error');
 		errorElement = document.createElement('div');
 		errorElement.setAttribute('id','error');
 		errorElement.innerHTML = '<ul id="error-list"></ul>';
@@ -54,11 +54,11 @@ function loadTodo(e) {
 	var instanceField = document.getElementById('instance-field');
 	const instance = instanceField.value;
 
-	if (tokenField.style.borderColor == 'red') {
-		tokenField.style.removeProperty('border');
+	if (tokenField.classList.contains('error')) {
+		tokenField.clasList.remove('error');
 	}
-	if (instanceField.style.borderColor == 'red') {
-		instanceField.style.removeProperty('border');
+	if (instanceField.classList.contains('error')) {
+		instanceField.classList.remove('error');
 	}
 
 	if (!instance) {
