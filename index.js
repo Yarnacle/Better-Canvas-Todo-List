@@ -96,7 +96,7 @@ function loadTodo(e) {
 				error(tokenField,messages);
 			}
 			if (todoObj.message) {
-				error(tokenField,[todoObj.message]);
+				error(instanceField,[todoObj.message]);
 			}
 			
 			enableForm();
