@@ -40,10 +40,11 @@ input {
 }
 
 #course-list .course-box {
-	padding: 5px;
+	padding: 10px;
 	border: 2px solid gray;
 	border-radius: 10px;
 	background-color: whitesmoke;
+	width: 600px;
 }
 
 #course-list .course-name {
