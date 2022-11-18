@@ -55,7 +55,7 @@ function loadTodo(e) {
 	const instance = instanceField.value;
 
 	if (tokenField.classList.contains('error')) {
-		tokenField.clasList.remove('error');
+		tokenField.classList.remove('error');
 	}
 	if (instanceField.classList.contains('error')) {
 		instanceField.classList.remove('error');
