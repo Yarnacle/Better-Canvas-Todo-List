@@ -31,6 +31,10 @@ input {
 	font-size: inherit;
 }
 
+#course-list {
+	padding: 0;
+}
+
 #course-list .course-container-li {
 	list-style-type: none;
 }
