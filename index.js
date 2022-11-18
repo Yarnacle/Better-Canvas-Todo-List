@@ -123,7 +123,7 @@ function loadTodo(e) {
 					courseTodoListElement.innerHTML += `
 						<li>
 							<a href="${courseTodoList[j].html_url}" target="_blank">${courseTodoList[j].name}</a>
-							due ${months[dueDate.getMonth()]} ${dueDate.getDay()} at ${dueDate.getHours()}:${dueDate.getMinutes()}
+							due ${months[dueDate.getMonth()]} ${dueDate.getDate()} at ${dueDate.getHours()}:${dueDate.getMinutes()}
 						</li>`;
 				}
 
