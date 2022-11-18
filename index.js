@@ -19,17 +19,19 @@ function loadTodo(e) {
 		document.body.removeChild(apiTokenHelpElement);
 	}
 
+	var content = document.getElementById('content');
 	var courseListElement = document.getElementById('course-list');
 
 	const error = (field,messages) => {
+		content.style.display = 'none';
 		if (courseListElement) {
-			document.body.removeChild(courseListElement);
+			content.removeChild(courseListElement);
 		}
 		field.style.borderColor = 'red';
 		errorElement = document.createElement('div');
 		errorElement.setAttribute('id','error');
 		errorElement.innerHTML = '<ul id="error-list"></ul>';
-		document.body.appendChild(errorElement);
+		document.body.insertBefore(errorElement,content);
 
 		let errorListElement = document.getElementById('error-list');
 		for (let i = 0; i < messages.length; i++) {
@@ -70,7 +72,7 @@ function loadTodo(e) {
 	else {
 		courseListElement = document.createElement('ul');
 		courseListElement.setAttribute('id','course-list');
-		document.body.appendChild(courseListElement);
+		content.appendChild(courseListElement);
 	}
 
 	var loadingElement = document.getElementById('loading');
@@ -98,6 +100,7 @@ function loadTodo(e) {
 			}
 			
 			enableForm();
+			content.style.display = 'block';
 			
 			const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -112,9 +115,14 @@ function loadTodo(e) {
 
 			const courses = Object.keys(simplifiedTodoObj);
 			for (let i = 0; i < courses.length; i++) {
+				let courseContainerElement = document.createElement('li');
+				courseContainerElement.setAttribute('class','course-container-li');
+				let courseBoxElement = document.createElement('div');
+				courseBoxElement.setAttribute('class','course-box');
+			
 				const courseTodoList = simplifiedTodoObj[courses[i]];
 
-				courseListElement.innerHTML += `<li>${courses[i]}</li>`;
+				courseBoxElement.innerHTML += `<p class="course-name">${courses[i]}</p><hr />`;
 
 				let courseTodoListElement = document.createElement('ul');
 				for (let j = 0; j < courseTodoList.length; j++) {
@@ -126,8 +134,9 @@ function loadTodo(e) {
 							due ${months[dueDate.getMonth()]} ${dueDate.getDate()} at ${dueDate.getHours()}:${dueDate.getMinutes()}
 						</li>`;
 				}
-
-				courseListElement.appendChild(courseTodoListElement);
+				courseBoxElement.appendChild(courseTodoListElement);
+				courseContainerElement.appendChild(courseBoxElement);
+				courseListElement.appendChild(courseContainerElement);
 				courseListElement.innerHTML += '<br />';
 			}
 		}
