@@ -1,5 +1,6 @@
 body {
 	font-size: 18px;
+	width: 1150px;
 }
 
 a {
@@ -29,4 +30,24 @@ a[target=_blank]:active:after {
 
 input {
 	font-size: inherit;
+}
+
+#course-list .course-container-li {
+	list-style-type: none;
+}
+
+#course-list .course-box {
+	padding: 5px;
+	border: 2px solid gray;
+	border-radius: 10px;
+	background-color: whitesmoke;
+}
+
+#course-list .course-name {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+#content {
+	display: none;
 }
