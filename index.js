@@ -82,7 +82,7 @@ function loadTodo(e) {
 		if (this.readyState == 4) {
 			loadingElement.style.display = 'none';
 
-			const todoObj = JSON.parse(this.responseText);
+			const todoObj = JSON.parse(JSON.parse(this.responseText).contents);
 
 			if (todoObj == null) {
 				error(instanceField,['invalid instance'])
@@ -141,7 +141,7 @@ function loadTodo(e) {
 			}
 		}
 	};
-	xhttp.open('get',`https://cors-anywhere.herokuapp.com/${instance + '.instructure.com/api/v1/users/self/todo'}?access_token=${token}&t=${new Date().getTime()}`);
+	xhttp.open('get',`https://api.allorigins.win/get?url=${'https://' + instance + '.instructure.com/api/v1/users/self/todo'}?access_token=${token}&t=${new Date().getTime()}`);
 	xhttp.send();
 	content.style.display = 'none';
 	loadingElement.style.display = 'inline';
