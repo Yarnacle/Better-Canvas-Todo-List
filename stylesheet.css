@@ -1,0 +1,63 @@
+body {
+	font-size: 18px;
+}
+
+a {
+	color: blue;
+}
+
+a:active {
+	color: cornflowerblue;
+}
+
+a[target=_blank]:after {
+	content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAF9JREFUKFOd0NENgCAMRdH7NmE0mUw3w01qGhEqAT/sH/SkzatYlllsCd4fIHVgG7D7u8LYfFhD2fECRqTDt07giO4NA7QEFCCDT+o1m5hAZwhkHvAjTAv1C67PXqPoAii9LAO96tF+AAAAAElFTkSuQmCC);
+}
+
+a[target=_blank]:active:after {
+	content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAGxJREFUKFNjZMABUqa+/Y8sxYguMCdbmBGmIHXqm4T/DIzzQXywQmRJdEWMDP8TQYqxKoSZBFI0O1tkAcgwDIXoimA2oCjMmP5e4c+/f/dhJmF4BtmNIMUzMgUfwBTB/IDTM5QpxBXoMHGQ0wBtwVufOKMoiAAAAABJRU5ErkJggg==');
+}
+
+#loading {
+	display: none;
+	vertical-align: middle;
+}
+
+#error {
+	color: red;
+}
+
+.error {
+	border: 2px solid red;
+	border-radius: 3px;
+	background-color: lightpink;
+}
+
+input {
+	font-size: inherit;
+}
+
+#course-list {
+	padding: 0;
+}
+
+#course-list .course-container-li {
+	list-style-type: none;
+}
+
+#course-list .course-box {
+	padding: 10px;
+	border: 2px solid gray;
+	border-radius: 10px;
+	background-color: whitesmoke;
+	width: 600px;
+}
+
+#course-list .course-name {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+#content {
+	display: none;
+}
