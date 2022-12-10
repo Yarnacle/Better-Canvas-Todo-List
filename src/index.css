@@ -1,13 +1,26 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Roboto';
+  font-size: 17px;
+  color: #303030;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input {
+	font-size: inherit;
+	color: inherit;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+a {
+	color: blue;
+}
+a:active {
+	color: cornflowerblue;
+}
+a[target=_blank]:after {
+	content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAF9JREFUKFOd0NENgCAMRdH7NmE0mUw3w01qGhEqAT/sH/SkzatYlllsCd4fIHVgG7D7u8LYfFhD2fECRqTDt07giO4NA7QEFCCDT+o1m5hAZwhkHvAjTAv1C67PXqPoAii9LAO96tF+AAAAAElFTkSuQmCC);
+}
+a[target=_blank]:active:after {
+	content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAGxJREFUKFNjZMABUqa+/Y8sxYguMCdbmBGmIHXqm4T/DIzzQXywQmRJdEWMDP8TQYqxKoSZBFI0O1tkAcgwDIXoimA2oCjMmP5e4c+/f/dhJmF4BtmNIMUzMgUfwBTB/IDTM5QpxBXoMHGQ0wBtwVufOKMoiAAAAABJRU5ErkJggg==');
 }
