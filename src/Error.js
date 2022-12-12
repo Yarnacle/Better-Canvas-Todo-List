@@ -5,9 +5,9 @@ function Error(props) {
     <div className="Error">
 		<article className="message is-danger">
   			<div className="message-body">
-    		<p>{ props.message }</p>
+    			{ props.message.map((line,i) => <p key={ i }>{ line }</p>) }
   			</div>
-</article>
+		</article>
     </div>
   );
 }

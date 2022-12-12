@@ -8,25 +8,26 @@ function App(props) {
 
 	const [todo,setTodo] = useState();
 	const [loading,setLoading] = useState(false);
+	const [courseList,setCourseList] = useState();
 
-	const [canvasInstance,setCanvasInstance] = useState();
-	const [authToken,setAuthToken] = useState();
+	const [canvasInstance,setCanvasInstance] = useState('');
+	const [authToken,setAuthToken] = useState('');
 
 	const [errorMessage,setErrorMessage] = useState('');
 
 	const handleResponse = response => {
 		setLoading(false);
 		if (response.contents == null) {
-			setErrorMessage('Invalid form submission');
+			setErrorMessage(['Invalid form submission']);
 			return;
 		}
 		const contents = JSON.parse(response.contents);
 		if (contents.message) {
-			setErrorMessage(contents.message);
+			setErrorMessage([contents.message]);
 			return;
 		}
 		if (contents.errors) {
-			setErrorMessage(contents.errors.map(error => error.message).join('\n'));
+			setErrorMessage(contents.errors);
 			return;
 		}
 
@@ -37,6 +38,8 @@ function App(props) {
 			}
 			todoObj[contents[i].context_name].push(contents[i].assignment);
 		}
+		setCourseList(Object.keys(todoObj).sort((a,b) => todoObj[b].length - todoObj[a].length));
+
 		setCollapsedTodoForm(true);
 		setTodo(todoObj);
 	}
@@ -51,7 +54,7 @@ function App(props) {
 		.then(handleResponse)
 		.catch((e) => {
 			setLoading(false);
-			setErrorMessage('An unexpected error occured: ' + e);
+			setErrorMessage(['An unexpected error occured:',e.toString()]);
 		});
 	}
 
@@ -73,7 +76,7 @@ function App(props) {
 							<div className="field">
 								<label className="label">Canvas Instance</label>
 								<div className="control has-icons-left">
-									<input className="input" id="instance-field" onChange={ (e) => setCanvasInstance(e.target.value) } type="text" size="35" placeholder="e.g school" />
+									<input className="input" id="instance-field" value={ canvasInstance } onChange={ (e) => setCanvasInstance(e.target.value) } type="text" size="35" placeholder="e.g school" />
 									<span className="icon is-small is-left">
 										<i className="fa-solid fa-school"></i>
 									</span>
@@ -83,7 +86,7 @@ function App(props) {
 							<div className="field">
 								<label className="label">Account API Token</label>
 								<div className="control has-icons-left">
-									<input className="input" id="token-field" onChange={ (e) => setAuthToken(e.target.value) } type="password" size="70" placeholder="e.g 12345~abcd" />
+									<input className="input" id="token-field" value={ authToken } onChange={ (e) => setAuthToken(e.target.value) } type="password" size="70" placeholder="e.g 12345~abcd" />
 									<span className="icon is-small is-left">
 										<i className="fa-solid fa-key" />
 									</span>
@@ -107,7 +110,7 @@ function App(props) {
 			<div className="content">
 				{
 					errorMessage ? <Error message={ errorMessage } />
-					:todo ?  Object.keys(todo).map(course => <CourseTodo key={ course } courseName={ course } todoList={ todo[course] } />) 
+					:todo ?  courseList.map(course => <CourseTodo key={ course } courseName={ course } todoList={ todo[course] } />) 
 					:''
 				}
 			</div>
