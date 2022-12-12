@@ -1,17 +1,22 @@
-.App .course-list {
-	padding: 0;
-	margin-top: 0;
-	margin-bottom: 0;
-}
-.App .course-list-item {
-	list-style-type: none;
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css";
+
+.App .content {
+	margin: 10px;
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	flex-wrap: wrap;
 }
 
-.App .form-container {
-	padding: 15px;
-	background-color: whitesmoke;
-	border-bottom: 2px solid silver;
+.App .toggle-collapse-button {
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	position: absolute;
 }
-.App .response-container {
-	padding: 15px;
+
+@media (max-width: 480px) {
+	.App {
+		width: 100%;
+	}
 }

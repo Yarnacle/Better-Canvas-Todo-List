@@ -1,20 +1,24 @@
 import './CourseTodo.css';
 
 function CourseTodo(props) {
+
+	const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nove','Dec'];
+
 	return (
     <div className="CourseTodo">
-		<p className="course-name">{ props.courseName }</p>
-		<hr />
-		<ul>
+		<div className="panel is-info">
+			<p className="panel-heading">{ props.courseName }</p>
 			{ props.todoList.map(assignment => {
 				const dueDate = new Date(assignment.due_at);
 				return (
-					<li>
-						<a href={ assignment.html_url } target="_blank">{ assignment.name }</a> due at { dueDate.getDate() } at { dueDate.getHours() }:{ dueDate.getMinutes().toString().padStart(2,'0') }
-					</li>
+					<a className="panel-block" href={ assignment.html_url } target="_blank" rel="noreferrer">
+						<span className="tag is-light is-info ml-0">{ months[dueDate.getMonth()] } { dueDate.getDate() }</span>
+						<span className="tag is-light is-info ml-2 mr-2">{ dueDate.getHours() }:{ dueDate.getMinutes().toString().padStart(2,'0') }</span>
+						<span>{ assignment.name }</span>
+					</a>
 				)
 			}) }
-		</ul>
+		</div>
     </div>
   );
 }

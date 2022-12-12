@@ -1,23 +1,9 @@
-.CourseTodo {
-	border: 2px solid silver;
-	border-radius: 5px;
-	background-color: whitesmoke;
-	width: 700px;
-	padding: 5px;
+.CourseTodo .panel {
+	width: 600px;
 }
 
-.CourseTodo .course-name {
-	margin-left: 10px;
-	margin-right: 10px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-.CourseTodo ul {
-	margin: 10px;
-	margin-left: 0;
-}
-.CourseTodo ul li {
-	margin-top: 2px;
-	margin-bottom: 2px;
+@media (max-width: 480px) {
+	.CourseTodo .panel {
+		width: 100%;
+	}
 }

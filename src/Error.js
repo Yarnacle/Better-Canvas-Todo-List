@@ -3,7 +3,11 @@ import './Error.css';
 function Error(props) {
 	return (
     <div className="Error">
-		<p>{ props.message }</p>
+		<article className="message is-danger">
+  			<div className="message-body">
+    		<p>{ props.message }</p>
+  			</div>
+</article>
     </div>
   );
 }
