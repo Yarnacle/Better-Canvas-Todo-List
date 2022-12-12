@@ -68,7 +68,7 @@ function App(props) {
 		<div className="App">
 			<div className="box notification is-light top">
 				{ !collapsedTodoForm &&
-				<div className="block">
+				<div className="block mr-4">
 						<form onSubmit={ getTodoInfo }>
 							<div className="field">
 								<label className="label">Canvas Instance</label>

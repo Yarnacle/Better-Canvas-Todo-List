@@ -1,9 +1,3 @@
 .CourseTodo .panel {
 	width: 600px;
 }
-
-@media (max-width: 480px) {
-	.CourseTodo .panel {
-		width: 100%;
-	}
-}
