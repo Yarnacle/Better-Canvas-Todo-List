@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Better-Canvas-Todo-List/static/css/main.43a98c4c.css",
-    "main.js": "/Better-Canvas-Todo-List/static/js/main.58fb0ac9.js",
+    "main.js": "/Better-Canvas-Todo-List/static/js/main.fc7c13d4.js",
     "static/js/787.2dc4bfe2.chunk.js": "/Better-Canvas-Todo-List/static/js/787.2dc4bfe2.chunk.js",
     "index.html": "/Better-Canvas-Todo-List/index.html",
     "main.43a98c4c.css.map": "/Better-Canvas-Todo-List/static/css/main.43a98c4c.css.map",
-    "main.58fb0ac9.js.map": "/Better-Canvas-Todo-List/static/js/main.58fb0ac9.js.map",
+    "main.fc7c13d4.js.map": "/Better-Canvas-Todo-List/static/js/main.fc7c13d4.js.map",
     "787.2dc4bfe2.chunk.js.map": "/Better-Canvas-Todo-List/static/js/787.2dc4bfe2.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.43a98c4c.css",
-    "static/js/main.58fb0ac9.js"
+    "static/js/main.fc7c13d4.js"
   ]
 }
