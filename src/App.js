@@ -27,7 +27,7 @@ function App(props) {
 			return;
 		}
 		if (contents.errors) {
-			setErrorMessage(contents.errors);
+			setErrorMessage(contents.errors.map(error => error.message));
 			return;
 		}
 
