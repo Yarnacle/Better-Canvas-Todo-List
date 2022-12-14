@@ -166,7 +166,7 @@ function App(props) {
 				}
 			</div>
 			{minuteIntervalRef.current &&
-				<div className="footer refresh-status px-4 py-2">
+				<div className="notificatoin is-light refresh-status px-4 py-2">
 					<p>
 						{ loading ? <span className="bulma-loader-mixin"></span>
 							:<span onClick={ refresh } className="refresh-button icon is-small">
