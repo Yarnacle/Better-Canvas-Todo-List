@@ -17,18 +17,17 @@ function App(props) {
 
 	const [canvasInstance,setCanvasInstance] = useState('');
 	const [authToken,setAuthToken] = useState('');
-	const [submittedInstance,setSubmittedInstance] = useState('');
-	const [submittedToken,setSubmittedToken] = useState('');
+	const submittedInstance = useRef('');
+	const submittedToken = useRef('');
 
 	const [errorMessage,setErrorMessage] = useState('');
 
 	const resetCounter = () => {
-		// clear everything
 		clearInterval(minuteIntervalRef.current);
 		minuteIntervalRef.current = null;
 		setMinuteCount(0);
-
-		// restart
+	}
+	const startCounter = () => {
 		minuteIntervalRef.current = setInterval(() => {
 			setMinuteCount(prevState => prevState + 1);
 		},60000);
@@ -37,25 +36,30 @@ function App(props) {
 		clearInterval(refreshRef.current);
 		refreshRef.current = null;
 	};
+	const startRefresh = () => {
+		refreshRef.current = setInterval(refresh,600000);
+	}
 
 	const refresh = () => {
 		setLoading(true);
-		fetch(`https://api.allorigins.win/get?url=https://${submittedInstance}.instructure.com/api/v1/users/self/todo?access_token=${submittedToken}&t=${new Date().getTime()}`)
+		fetch(`https://api.allorigins.win/get?url=https://${submittedInstance.current}.instructure.com/api/v1/users/self/todo?access_token=${submittedToken.current}&t=${new Date().getTime()}`)
 		.then(response => response.json())
 		.then(response => {
 			setLoading(false);
-
 			const contents = JSON.parse(response.contents);
 			update(contents);
 		})
 		.catch((e) => {
 			setLoading(false);
+			resetCounter();
+			resetRefresh();
 			setErrorMessage(['An unexpected error occured:',e.toString()]);
 		});
 	};
 
 	const update = contents => {
 		resetCounter();
+		resetRefresh();
 		const todoObj = {};
 		for (let i = 0; i < contents.length; i++) {
 			if (!todoObj[contents[i].context_name]) {
@@ -66,10 +70,14 @@ function App(props) {
 		setCourseList(Object.keys(todoObj).sort((a,b) => todoObj[b].length - todoObj[a].length));
 
 		setTodo(todoObj);
+		startCounter();
+		startRefresh();
 	};
 
 	const handleResponse = response => {
 		setLoading(false);
+		resetCounter();
+		resetRefresh();
 		
 		// error handling
 		if (response.contents == null) {
@@ -86,21 +94,13 @@ function App(props) {
 			return;
 		}
 
-		// clear intervals
-		resetRefresh();
-
 		// save valid form data so auto refresh
 		// can continue working even if form is
 		// modified after submission
-		setSubmittedInstance(canvasInstance);
-		setSubmittedToken(authToken);
+		submittedInstance.current = canvasInstance;
+		submittedToken.current = authToken;
 
-		// start auto refresh
-		refreshRef.current = setInterval(() => {
-			refresh();
-			resetCounter();
-		},600000);
-
+		setCollapsedTodoForm(true);
 		update(contents);
 	};
 	const getTodoInfo = event => {
@@ -109,8 +109,6 @@ function App(props) {
 		setErrorMessage();
 		setLoading(true);
 
-		setCollapsedTodoForm(false);
-
 		fetch(`https://api.allorigins.win/get?url=https://${canvasInstance}.instructure.com/api/v1/users/self/todo?access_token=${authToken}&t=${new Date().getTime()}`)
 		.then(response => response.json())
 		.then(handleResponse)
@@ -118,14 +116,6 @@ function App(props) {
 			setLoading(false);
 			setErrorMessage(['An unexpected error occured:',e.toString()]);
 		});
-	};
-
-	const toggleTodoForm = () => {
-		if (collapsedTodoForm) {
-			setCollapsedTodoForm(false);
-			return;
-		}
-		setCollapsedTodoForm(true);
 	};
 
 	return (
@@ -147,7 +137,7 @@ function App(props) {
 							<div className="field">
 								<label className="label">Account API Token</label>
 								<div className="control has-icons-left">
-									<input className="input" id="token-field" value={authToken} onChange={(e) => setAuthToken(e.target.value)} type="password" size="70" placeholder="e.g 12345~abcd" />
+									<input className="input" id="token-field" value={authToken} onChange={ (e) => setAuthToken(e.target.value) } type="password" size="70" placeholder="e.g 12345~abcd" />
 									<span className="icon is-small is-left">
 										<i className="fa-solid fa-key" />
 									</span>
@@ -163,7 +153,7 @@ function App(props) {
 					</div>
 				}
 				<div className="block">
-					<button className="button toggle-collapse-button is-light" onClick={toggleTodoForm}>
+					<button className="button toggle-collapse-button is-light" onClick={ () => {setCollapsedTodoForm(!collapsedTodoForm)} }>
 						<i className={'fa-solid ' + (collapsedTodoForm ? 'fa-chevron-down' : 'fa-chevron-up')}></i>
 					</button>
 				</div>

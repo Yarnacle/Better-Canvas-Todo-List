@@ -2,6 +2,7 @@
 
 .App .content {
 	margin: 10px;
+	padding-bottom: 80px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
