@@ -10,3 +10,17 @@ input {
 	font-size: inherit;
 	color: inherit;
 }
+
+.bulma-loader-mixin {
+	animation: spinAround .5s infinite linear;
+	border: 2px solid #dbdbdb;
+	border-radius: 9999px;
+	border-right-color: transparent;
+	border-top-color: transparent;
+	content: "";
+	display: inline-block;
+	position: relative;
+	width: 1em;
+	height: 1em;
+	vertical-align: middle;
+}

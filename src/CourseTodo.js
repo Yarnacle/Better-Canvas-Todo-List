@@ -11,7 +11,7 @@ function CourseTodo(props) {
 			{ props.todoList.map(assignment => {
 				const dueDate = new Date(assignment.due_at);
 				return (
-					<a className="panel-block" href={ assignment.html_url } target="_blank" rel="noreferrer">
+					<a className="panel-block" href={ assignment.html_url } target="_blank" rel="noreferrer" key="{ assignment.id }">
 						<span className="tag is-light is-info ml-0">{ months[dueDate.getMonth()] } { dueDate.getDate() }</span>
 						<span className="tag is-light is-info ml-2 mr-2">{ dueDate.getHours() }:{ dueDate.getMinutes().toString().padStart(2,'0') }</span>
 						<span>{ assignment.name }</span>
