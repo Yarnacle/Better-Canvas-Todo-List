@@ -1,14 +1,9 @@
 import './App.css';
-import { useState,useRef } from 'react';
+import { useState,useRef,useEffect } from 'react';
 import Error from './Error.js';
 import CourseTodo from './CourseTodo.js';
 
 function App(props) {
-
-	const refreshRef = useRef();
-	const minuteIntervalRef = useRef();
-	const [minuteCount,setMinuteCount] = useState(0);
-
 	const [collapsedTodoForm,setCollapsedTodoForm] = useState(false);
 
 	const [todo,setTodo] = useState();
@@ -22,23 +17,24 @@ function App(props) {
 
 	const [errorMessage,setErrorMessage] = useState('');
 
-	const resetCounter = () => {
-		clearInterval(minuteIntervalRef.current);
-		minuteIntervalRef.current = null;
-		setMinuteCount(0);
-	}
-	const startCounter = () => {
-		minuteIntervalRef.current = setInterval(() => {
-			setMinuteCount(prevState => prevState + 1);
-		},60000);
-	};
-	const resetRefresh = () => {
-		clearInterval(refreshRef.current);
-		refreshRef.current = null;
-	};
-	const startRefresh = () => {
-		refreshRef.current = setInterval(refresh,600000);
-	}
+	const lastUpdated = useRef();
+	const [minuteCount,setMinuteCount] = useState(0);
+
+	useEffect(() => {
+		const autoUpdate = setInterval(() => {
+			if (!lastUpdated.current) {
+				return;
+			}
+			const minDiff = Math.floor((new Date() - lastUpdated.current) / 60000);
+			setMinuteCount(minDiff);
+			if (minDiff >= 10) {
+				refresh();
+			}
+		},500);
+		return () => {
+			clearInterval(autoUpdate);
+		}
+	},[]);
 
 	const refresh = () => {
 		setLoading(true);
@@ -51,15 +47,12 @@ function App(props) {
 		})
 		.catch((e) => {
 			setLoading(false);
-			resetCounter();
-			resetRefresh();
 			setErrorMessage(['An unexpected error occured:',e.toString()]);
 		});
 	};
 
 	const update = contents => {
-		resetCounter();
-		resetRefresh();
+		lastUpdated.current = new Date();
 		const todoObj = {};
 		for (let i = 0; i < contents.length; i++) {
 			if (!todoObj[contents[i].context_name]) {
@@ -70,14 +63,10 @@ function App(props) {
 		setCourseList(Object.keys(todoObj).sort((a,b) => todoObj[b].length - todoObj[a].length));
 
 		setTodo(todoObj);
-		startCounter();
-		startRefresh();
 	};
 
 	const handleResponse = response => {
 		setLoading(false);
-		resetCounter();
-		resetRefresh();
 		
 		// error handling
 		if (response.contents == null) {
@@ -165,7 +154,7 @@ function App(props) {
 						: ''
 				}
 			</div>
-			{minuteIntervalRef.current &&
+			{lastUpdated.current &&
 				<div className="notificatoin is-light refresh-status px-4 py-2">
 					<p>
 						{ loading ? <span className="bulma-loader-mixin"></span>
