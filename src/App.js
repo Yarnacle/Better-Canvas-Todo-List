@@ -1,5 +1,5 @@
 import './App.css';
-import { useState,useRef,useEffect } from 'react';
+import { useState,useRef,useEffect,useCallback } from 'react';
 import Error from './Error.js';
 import CourseTodo from './CourseTodo.js';
 
@@ -20,23 +20,7 @@ function App(props) {
 	const lastUpdated = useRef();
 	const [minuteCount,setMinuteCount] = useState(0);
 
-	useEffect(() => {
-		const autoUpdate = setInterval(() => {
-			if (!lastUpdated.current) {
-				return;
-			}
-			const minDiff = Math.floor((new Date() - lastUpdated.current) / 60000);
-			setMinuteCount(minDiff);
-			if (minDiff >= 10) {
-				refresh();
-			}
-		},500);
-		return () => {
-			clearInterval(autoUpdate);
-		}
-	},[]);
-
-	const refresh = () => {
+	const refresh = useCallback(() => {
 		setLoading(true);
 		fetch(`https://api.allorigins.win/get?url=https://${submittedInstance.current}.instructure.com/api/v1/users/self/todo?access_token=${submittedToken.current}&t=${new Date().getTime()}`)
 		.then(response => response.json())
@@ -49,7 +33,7 @@ function App(props) {
 			setLoading(false);
 			setErrorMessage(['An unexpected error occured:',e.toString()]);
 		});
-	};
+	},[]);
 
 	const update = contents => {
 		lastUpdated.current = new Date();
@@ -106,6 +90,22 @@ function App(props) {
 			setErrorMessage(['An unexpected error occured:',e.toString()]);
 		});
 	};
+
+	useEffect(() => {
+		const autoUpdate = setInterval(() => {
+			if (!lastUpdated.current) {
+				return;
+			}
+			const minDiff = Math.floor((new Date() - lastUpdated.current) / 60000);
+			setMinuteCount(minDiff);
+			if (minDiff >= 10) {
+				refresh();
+			}
+		},500);
+		return () => {
+			clearInterval(autoUpdate);
+		}
+	},[refresh]);
 
 	return (
 		<div className="App">
