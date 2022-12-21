@@ -2,6 +2,7 @@ import './App.css';
 import { useState,useRef,useEffect,useCallback } from 'react';
 import Error from './Error.js';
 import CourseTodo from './CourseTodo.js';
+import WaitingPopup from './WaitingPopup.js';
 
 function App(props) {
 	const [collapsedTodoForm,setCollapsedTodoForm] = useState(false);
@@ -20,7 +21,22 @@ function App(props) {
 	const lastUpdated = useRef();
 	const [minuteCount,setMinuteCount] = useState(0);
 
-	const refresh = useCallback(() => {
+	const online = useRef(true);
+	const [waiting,setWaiting] = useState(false);
+	const waitingRef = useRef(false);
+	useEffect(() => {
+		waitingRef.current = waiting;
+	},[waiting]);
+
+	const refresh = useCallback((onlineOverride) => {
+		if (onlineOverride) {
+			setWaiting(false);
+		}
+		else if (!online.current) {
+			setWaiting(true);
+			return;
+		}
+		
 		setLoading(true);
 		fetch(`https://api.allorigins.win/get?url=https://${submittedInstance.current}.instructure.com/api/v1/users/self/todo?access_token=${submittedToken.current}&t=${new Date().getTime()}`)
 		.then(response => response.json())
@@ -33,7 +49,7 @@ function App(props) {
 			setLoading(false);
 			setErrorMessage(['An unexpected error occured:',e.toString()]);
 		});
-	},[]);
+	},[online.current]);
 
 	const update = contents => {
 		lastUpdated.current = new Date();
@@ -102,13 +118,28 @@ function App(props) {
 				refresh();
 			}
 		},500);
+
+		window.addEventListener('online',() => {
+			online.current = true;
+			if (waitingRef.current) {
+				refresh(true);
+			}
+		});
+		window.addEventListener('offline',() => {
+			online.current = false;
+		});
+		
 		return () => {
+			window.removeEventListener('online');
+			window.removeEventListener('offline');
 			clearInterval(autoUpdate);
 		}
-	},[refresh]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[]);
 
 	return (
 		<div className="App">
+			{ waiting && <WaitingPopup /> }
 			<div className="box notification header">
 				{!collapsedTodoForm &&
 					<div className="block">
@@ -158,7 +189,7 @@ function App(props) {
 				<div className="notificatoin is-light refresh-status px-4 py-2">
 					<p>
 						{ loading ? <span className="bulma-loader-mixin"></span>
-							:<span onClick={ refresh } className="refresh-button icon is-small">
+							:<span onClick={ () => {refresh();} } className="refresh-button icon is-small">
 								<i className="fa-solid fa-rotate-right"></i>
 							</span>
 						}
