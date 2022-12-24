@@ -16,10 +16,12 @@ function App(props) {
 	const submittedInstance = useRef('');
 	const submittedToken = useRef('');
 
-	const [errorMessage,setErrorMessage] = useState('');
+	const [errorMessage,setErrorMessage] = useState();
 
 	const lastUpdated = useRef();
 	const [minuteCount,setMinuteCount] = useState(0);
+
+	const intervalRef = useRef(null);
 
 	const online = useRef(true);
 	const [waiting,setWaiting] = useState(false);
@@ -27,32 +29,27 @@ function App(props) {
 	useEffect(() => {
 		waitingRef.current = waiting;
 	},[waiting]);
-
-	const refresh = useCallback((onlineOverride) => {
-		if (onlineOverride) {
-			setWaiting(false);
-		}
-		else if (!online.current) {
-			setWaiting(true);
-			return;
-		}
-		
+	
+	const refresh = useCallback(() => {
 		setLoading(true);
 		fetch(`https://api.allorigins.win/get?url=https://${submittedInstance.current}.instructure.com/api/v1/users/self/todo?access_token=${submittedToken.current}&t=${new Date().getTime()}`)
 		.then(response => response.json())
 		.then(response => {
+			lastUpdated.current = new Date();
 			setLoading(false);
 			const contents = JSON.parse(response.contents);
 			update(contents);
 		})
 		.catch((e) => {
 			setLoading(false);
-			setErrorMessage(['An unexpected error occured:',e.toString()]);
+			if (!(e instanceof TypeError)) {
+				displayError(e);
+			}
 		});
-	},[online.current]);
+	},[]);
 
 	const update = contents => {
-		lastUpdated.current = new Date();
+		setErrorMessage();
 		const todoObj = {};
 		for (let i = 0; i < contents.length; i++) {
 			if (!todoObj[contents[i].context_name]) {
@@ -66,6 +63,7 @@ function App(props) {
 	};
 
 	const handleResponse = response => {
+		lastUpdated.current = new Date();
 		setLoading(false);
 		
 		// error handling
@@ -95,21 +93,24 @@ function App(props) {
 	const getTodoInfo = event => {
 		event.preventDefault();
 		setTodo();
-		setErrorMessage();
 		setLoading(true);
 
 		fetch(`https://api.allorigins.win/get?url=https://${canvasInstance}.instructure.com/api/v1/users/self/todo?access_token=${authToken}&t=${new Date().getTime()}`)
 		.then(response => response.json())
 		.then(handleResponse)
 		.catch((e) => {
-			setLoading(false);
-			setErrorMessage(['An unexpected error occured:',e.toString()]);
+			displayError(e);
 		});
 	};
+	const displayError = (e) => {
+		setLoading(false);
+		lastUpdated.current = null;
+		setErrorMessage(['An unexpected error occured:',e.toString()]);
+	}
 
 	useEffect(() => {
-		const autoUpdate = setInterval(() => {
-			if (!lastUpdated.current) {
+		intervalRef.current = setInterval(() => {
+			if (!lastUpdated.current || !online.current || loading) {
 				return;
 			}
 			const minDiff = Math.floor((new Date() - lastUpdated.current) / 60000);
@@ -119,22 +120,27 @@ function App(props) {
 			}
 		},500);
 
+		return () => {
+			clearInterval(intervalRef.current);
+		}
+	},[lastUpdated,online,loading,refresh]);
+	
+	useEffect(() => {
 		window.addEventListener('online',() => {
 			online.current = true;
 			if (waitingRef.current) {
-				refresh(true);
+				setWaiting(false);
 			}
 		});
 		window.addEventListener('offline',() => {
 			online.current = false;
+			setWaiting(true);
 		});
 		
 		return () => {
 			window.removeEventListener('online');
 			window.removeEventListener('offline');
-			clearInterval(autoUpdate);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[]);
 
 	return (
