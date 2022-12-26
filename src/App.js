@@ -187,12 +187,23 @@ function App(props) {
 			<div className="content">
 				{
 					errorMessage ? <Error message={errorMessage} />
-						: todo ? courseList.map(course => <CourseTodo key={course} courseName={course} todoList={todo[course]} />)
+						: todo ? (
+							courseList.length == 0 ?
+								<div className="message is-success">
+									<div className="message-body">
+										<span className="icon is-small">
+											<i className="fa-solid fa-check"></i>
+										</span>
+										<span className="ml-2">All done!</span>
+									</div>
+								</div>
+							:courseList.map(course => <CourseTodo key={course} courseName={course} todoList={todo[course]} />)
+						)
 						: ''
 				}
 			</div>
 			{lastUpdated.current &&
-				<div className="notificatoin is-light refresh-status px-4 py-2">
+				<div className="notification is-light refresh-status px-4 py-2">
 					<p>
 						{ loading ? <span className="bulma-loader-mixin"></span>
 							:<span onClick={ () => {refresh();} } className="refresh-button icon is-small">
