@@ -5,6 +5,15 @@ import CourseTodo from './CourseTodo.js';
 import WaitingPopup from './WaitingPopup.js';
 
 function App(props) {
+	const mountRef = useRef(false);
+
+	const [loadingLocalStorage,setLoadingLocalStorage] = useState(false);
+	useEffect(() => {
+		if (mountRef.current) {
+			getTodoInfo();
+		}
+	},[loadingLocalStorage])
+
 	const [collapsedTodoForm,setCollapsedTodoForm] = useState(false);
 
 	const [todo,setTodo] = useState();
@@ -13,8 +22,22 @@ function App(props) {
 
 	const [canvasInstance,setCanvasInstance] = useState('');
 	const [authToken,setAuthToken] = useState('');
+	const instanceRef = useRef('');
+	const tokenRef = useRef('');
+	useEffect(() => {
+		instanceRef.current = canvasInstance;
+		tokenRef.current = authToken;
+	},[canvasInstance,authToken])
+	
+	
 	const submittedInstance = useRef('');
 	const submittedToken = useRef('');
+	const setSubmittedValues = (instance,token) => {
+		submittedInstance.current = instance;
+		submittedToken.current = token;
+		localStorage.setItem('instance',instance);
+		localStorage.setItem('token',token);
+	}
 
 	const [errorMessage,setErrorMessage] = useState();
 
@@ -35,7 +58,6 @@ function App(props) {
 		fetch(`https://api.allorigins.win/get?url=https://${submittedInstance.current}.instructure.com/api/v1/users/self/todo?access_token=${submittedToken.current}&t=${new Date().getTime()}`)
 		.then(response => response.json())
 		.then(response => {
-			lastUpdated.current = new Date();
 			setLoading(false);
 			const contents = JSON.parse(response.contents);
 			update(contents);
@@ -49,6 +71,7 @@ function App(props) {
 	},[]);
 
 	const update = contents => {
+		lastUpdated.current = new Date();
 		setErrorMessage();
 		const todoObj = {};
 		for (let i = 0; i < contents.length; i++) {
@@ -63,7 +86,6 @@ function App(props) {
 	};
 
 	const handleResponse = response => {
-		lastUpdated.current = new Date();
 		setLoading(false);
 		
 		// error handling
@@ -84,17 +106,17 @@ function App(props) {
 		// save valid form data so auto refresh
 		// can continue working even if form is
 		// modified after submission
-		submittedInstance.current = canvasInstance;
-		submittedToken.current = authToken;
+		setSubmittedValues(canvasInstance,authToken);
 
 		setCollapsedTodoForm(true);
 		update(contents);
 	};
 	const getTodoInfo = event => {
-		event.preventDefault();
+		if (event) {
+			event.preventDefault();
+		}
 		setTodo();
 		setLoading(true);
-
 		fetch(`https://api.allorigins.win/get?url=https://${canvasInstance}.instructure.com/api/v1/users/self/todo?access_token=${authToken}&t=${new Date().getTime()}`)
 		.then(response => response.json())
 		.then(handleResponse)
@@ -136,7 +158,15 @@ function App(props) {
 			online.current = false;
 			setWaiting(true);
 		});
-		
+		const instance = localStorage.getItem('instance');
+		if (instance) {
+			setCanvasInstance(instance);
+			setAuthToken(localStorage.getItem('token'));
+			setLoadingLocalStorage(true);
+		}
+
+		mountRef.current = true;
+
 		return () => {
 			window.removeEventListener('online');
 			window.removeEventListener('offline');
@@ -188,7 +218,7 @@ function App(props) {
 				{
 					errorMessage ? <Error message={errorMessage} />
 						: todo ? (
-							courseList.length == 0 ?
+							courseList.length === 0 ?
 								<div className="message is-success">
 									<div className="message-body">
 										<span className="icon is-small">
