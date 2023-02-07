@@ -1,4 +1,7 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css";
+/* @import 'bulmaswatch/flatly/bulmaswatch.min.css';
+@import 'bulmaswatch/darkly/bulmaswatch.min.css' (prefers-color-scheme: dark); */
+@import 'bulma-switch-control/css/main.min.css';
 
 body {
   margin: 0;
@@ -21,4 +24,7 @@ input {
 	width: 1em;
 	height: 1em;
 	vertical-align: middle;
+}
+
+@media (prefers-color-scheme: dark) {
 }

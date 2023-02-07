@@ -3,6 +3,7 @@ import { useState,useRef,useEffect,useCallback } from 'react';
 import Error from './Error.js';
 import CourseTodo from './CourseTodo.js';
 import WaitingPopup from './WaitingPopup.js';
+import { Helmet } from 'react-helmet';
 
 function App(props) {
 	const mountRef = useRef(false);
@@ -12,7 +13,15 @@ function App(props) {
 		if (mountRef.current) {
 			getTodoInfo();
 		}
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	},[loadingLocalStorage])
+
+	const [darkMode,setDark] = useState(false);
+	const setDarkMode = (mode) => {
+		setDark(mode);
+		localStorage.setItem('darkMode',mode.toString());
+	}
 
 	const [collapsedTodoForm,setCollapsedTodoForm] = useState(false);
 
@@ -158,6 +167,24 @@ function App(props) {
 			online.current = false;
 			setWaiting(true);
 		});
+
+		const localStorageDarkMode = localStorage.getItem('darkMode');
+		if (localStorageDarkMode === 'true') {
+			setDark(true);
+		}
+		else if (localStorageDarkMode === 'false') {
+			setDark(false);
+		}
+		else {
+			const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+			if (darkQuery.matches) {
+				setDark(true);
+			}
+			else {
+				setDark(false);
+			}
+		}
+
 		const instance = localStorage.getItem('instance');
 		if (instance) {
 			setCanvasInstance(instance);
@@ -166,7 +193,6 @@ function App(props) {
 		}
 
 		mountRef.current = true;
-
 		return () => {
 			window.removeEventListener('online');
 			window.removeEventListener('offline');
@@ -175,41 +201,57 @@ function App(props) {
 
 	return (
 		<div className="App">
+			<Helmet>
+				<link type="text/css" rel="stylesheet" href={'https://unpkg.com/bulmaswatch/' + (darkMode ? 'darkly':'flatly') + '/bulmaswatch.min.css'} />
+			</Helmet>
 			{ waiting && <WaitingPopup /> }
 			<div className="box notification header">
 				{!collapsedTodoForm &&
-					<div className="block">
-						<form onSubmit={getTodoInfo}>
-							<div className="field">
-								<label className="label">Canvas Instance</label>
-								<div className="control has-icons-left">
-									<input className="input" id="instance-field" value={canvasInstance} onChange={(e) => setCanvasInstance(e.target.value)} type="text" size="35" placeholder="e.g school" />
-									<span className="icon is-small is-left">
-										<i className="fa-solid fa-school"></i>
-									</span>
-								</div>
-								<p className="help">For "school.instructure.com", the instance name would be "school".</p>
+					<>
+						<div className="block">
+							<form>
+							<div class="field">
+								<label className="switch is-rounded">
+									<input type="checkbox" value="false" onChange={(e) => {setDarkMode(e.target.checked)}} defaultChecked={darkMode} />
+									<span className='check is-info'></span>
+									<span className="control-label">Dark Mode</span>
+								</label>
 							</div>
-							<div className="field">
-								<label className="label">Account API Token</label>
-								<div className="control has-icons-left">
-									<input className="input" id="token-field" value={authToken} onChange={ (e) => setAuthToken(e.target.value) } type="password" size="70" placeholder="e.g 12345~abcd" />
-									<span className="icon is-small is-left">
-										<i className="fa-solid fa-key" />
-									</span>
+							</form>
+						</div>
+						<div className="block">
+							<form onSubmit={getTodoInfo}>
+								<div className="field">
+									<label className="label">Canvas Instance</label>
+									<div className="control has-icons-left">
+										<input className="input" id="instance-field" value={canvasInstance} onChange={(e) => setCanvasInstance(e.target.value)} type="text" size="35" placeholder="e.g school" />
+										<span className="icon is-small is-left">
+											<i className="fa-solid fa-school"></i>
+										</span>
+									</div>
+									<p className="help">For "school.instructure.com", the instance name would be "school".</p>
 								</div>
-								<a className="help" target="_blank" href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273" rel="noreferrer">Need an API Token?</a>
-							</div>
-							<div className="field">
-								<div className="control">
-									<button className={"button is-link" + (loading ? ' is-loading' : '')} type="submit" >Get Todo</button>
+								<div className="field">
+									<label className="label">Account API Token</label>
+									<div className="control has-icons-left">
+										<input className="input" id="token-field" value={authToken} onChange={ (e) => setAuthToken(e.target.value) } type="password" size="70" placeholder="e.g 12345~abcd" />
+										<span className="icon is-small is-left">
+											<i className="fa-solid fa-key" />
+										</span>
+									</div>
+									<a className="help" target="_blank" href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273" rel="noreferrer">Need an API Token?</a>
 								</div>
-							</div>
-						</form>
-					</div>
+								<div className="field">
+									<div className="control">
+										<button className={"button is-primary" + (loading ? ' is-loading' : '')} type="submit" >Get Todo</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</>
 				}
 				<div className="block">
-					<button className="button toggle-collapse-button is-light" onClick={ () => {setCollapsedTodoForm(!collapsedTodoForm)} }>
+					<button className="button toggle-collapse-button" onClick={ () => {setCollapsedTodoForm(!collapsedTodoForm)} }>
 						<i className={'fa-solid ' + (collapsedTodoForm ? 'fa-chevron-down' : 'fa-chevron-up')}></i>
 					</button>
 				</div>
@@ -227,13 +269,13 @@ function App(props) {
 										<span className="ml-2">All done!</span>
 									</div>
 								</div>
-							:courseList.map(course => <CourseTodo key={course} courseName={course} todoList={todo[course]} />)
+							:courseList.map(course => <CourseTodo darkMode={darkMode} key={course} courseName={course} todoList={todo[course]} />)
 						)
 						: ''
 				}
 			</div>
 			{lastUpdated.current &&
-				<div className="notification is-light refresh-status px-4 py-2">
+				<div className={'notification refresh-status px-4 py-2 ' + (darkMode ? 'is-dark':'is-light')}>
 					<p>
 						{ loading ? <span className="bulma-loader-mixin"></span>
 							:<span onClick={ () => {refresh();} } className="refresh-button icon is-small">
