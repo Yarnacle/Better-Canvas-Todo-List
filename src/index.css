@@ -26,5 +26,6 @@ input {
 	vertical-align: middle;
 }
 
-@media (prefers-color-scheme: dark) {
+.panel.dark {
+	box-shadow: 0 0.5em 1em -0.125em rgba(240, 240, 240, 0.1), 0 0px 0 1px rgba(240, 240, 240, 0.02) !important;
 }

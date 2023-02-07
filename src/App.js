@@ -209,17 +209,6 @@ function App(props) {
 				{!collapsedTodoForm &&
 					<>
 						<div className="block">
-							<form>
-							<div class="field">
-								<label className="switch is-rounded">
-									<input type="checkbox" value="false" onChange={(e) => {setDarkMode(e.target.checked)}} defaultChecked={darkMode} />
-									<span className='check is-info'></span>
-									<span className="control-label">Dark Mode</span>
-								</label>
-							</div>
-							</form>
-						</div>
-						<div className="block">
 							<form onSubmit={getTodoInfo}>
 								<div className="field">
 									<label className="label">Canvas Instance</label>
@@ -241,7 +230,7 @@ function App(props) {
 									</div>
 									<a className="help" target="_blank" href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273" rel="noreferrer">Need an API Token?</a>
 								</div>
-								<div className="field">
+								<div className="field is-grouped">
 									<div className="control">
 										<button className={"button is-primary" + (loading ? ' is-loading' : '')} type="submit" >Get Todo</button>
 									</div>
@@ -250,10 +239,15 @@ function App(props) {
 						</div>
 					</>
 				}
-				<div className="block">
+				<div className="block buttons">
 					<button className="button toggle-collapse-button" onClick={ () => {setCollapsedTodoForm(!collapsedTodoForm)} }>
 						<i className={'fa-solid ' + (collapsedTodoForm ? 'fa-chevron-down' : 'fa-chevron-up')}></i>
 					</button>
+					<label className="switch is-rounded">
+						<input type="checkbox" value="false" onChange={(e) => {setDarkMode(e.target.checked)}} checked={darkMode} />
+						<span className='check is-info'></span>
+						<span className="control-label">Dark Mode</span>
+					</label>
 				</div>
 			</div>
 			<div className="content">
@@ -278,7 +272,7 @@ function App(props) {
 				<div className={'notification refresh-status px-4 py-2 ' + (darkMode ? 'is-dark':'is-light')}>
 					<p>
 						{ loading ? <span className="bulma-loader-mixin"></span>
-							:<span onClick={ () => {refresh();} } className="refresh-button icon is-small">
+							:<span onClick={refresh} className={'refresh-button icon is-small' + (darkMode ? ' dark':'')}>
 								<i className="fa-solid fa-rotate-right"></i>
 							</span>
 						}

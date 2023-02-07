@@ -29,7 +29,6 @@
 	bottom: 0;
 	width: 100%;
 	padding: 0;
-	box-shadow: 0 0.5em 1em 0.125em rgb(10 10 10 / 20%), 0 0 0 1px rgb(10 10 10 / 2%);
 }
 .App .refresh-status span {
 	vertical-align: middle;
@@ -37,10 +36,15 @@
 .App .refresh-status .refresh-button:hover {
 	color: gray;
 }
-@media (prefers-color-scheme: dark) {
-	.App .refresh-status .refresh-button:hover {
-		color: lightgray;
-	}
+
+.App .refresh-status .refresh-button.dark:hover {
+	color: lightgray;
+}
+
+.App .buttons {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between !important;
 }
 
 @media (max-width: 620px) {

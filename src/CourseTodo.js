@@ -6,7 +6,7 @@ function CourseTodo(props) {
 
 	return (
     <div className="CourseTodo">
-		<div className="panel is-info">
+		<div className={'panel is-info' + (props.darkMode ? ' dark':'')}>
 			<p className="panel-heading">{ props.courseName }</p>
 			{ props.todoList.map(assignment => {
 				const dueDate = new Date(assignment.due_at);
