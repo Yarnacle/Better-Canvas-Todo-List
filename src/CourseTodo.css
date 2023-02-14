@@ -1,3 +1,19 @@
 .CourseTodo .panel {
 	width: 600px;
 }
+
+.CourseTodo .panel-block-container {
+	position: relative;
+	width: 100%;
+}
+
+.CourseTodo .panel-block-container .delete-container {
+	position: absolute;
+	opacity: 0;
+	right: 5px;
+	top: 0.4em;
+}
+.CourseTodo .panel-block:hover .delete-container {
+	opacity: 1;
+	transition: 0.5s;
+}

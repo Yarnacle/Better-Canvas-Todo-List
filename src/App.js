@@ -87,7 +87,10 @@ function App(props) {
 			if (!todoObj[contents[i].context_name]) {
 				todoObj[contents[i].context_name] = [];
 			}
-			todoObj[contents[i].context_name].push(contents[i].assignment);
+			todoObj[contents[i].context_name].push({
+				...contents[i].assignment,
+				ignore:contents[i].ignore
+			});
 		}
 		setCourseList(Object.keys(todoObj).sort((a,b) => todoObj[b].length - todoObj[a].length));
 
@@ -263,7 +266,7 @@ function App(props) {
 										<span className="ml-2">All done!</span>
 									</div>
 								</div>
-							:courseList.map(course => <CourseTodo darkMode={darkMode} key={course} courseName={course} todoList={todo[course]} />)
+							:courseList.map(course => <CourseTodo darkMode={darkMode} key={course} courseName={course} todoList={todo[course]} todo={todo} refresh={refresh} token={submittedToken.current} instance={submittedInstance.current} />)
 						)
 						: ''
 				}
