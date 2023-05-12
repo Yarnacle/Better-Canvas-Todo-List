@@ -2,18 +2,6 @@ import './CourseTodo.css';
 
 function CourseTodo(props) {
 	const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nove','Dec'];
-	
-	const ignore = id => {
-		fetch(`https://api.allorigins.win/get?url=https://${props.instance}.instructure.com/api/v1/users/self/todo/assignment_${id}/submitting?access_token=${props.token}&permanent=0`,{
-			method: 'DELETE'
-		})
-		.then(() => {
-			props.refresh();
-		})
-		.catch(e => {
-			alert(e);
-		});
-	}
 
 	return (
     <div className="CourseTodo">
@@ -30,7 +18,10 @@ function CourseTodo(props) {
 								<span>{ assignment.name }</span>
 							</div>
 							<div className="delete-container">
-								<button className="x-button delete is-small" onClick={(event) => {ignore(assignment.id); event.preventDefault();}}></button>
+								{ (!props.loading && props.currentlyIgnoring !== assignment.id) ?
+									<button className="x-button delete is-small" onClick={(event) => {props.ignore(assignment.id); event.preventDefault();}}></button>
+									:<span className="bulma-loader-mixin"></span>
+								}
 							</div>
 						</div>
 					</a>

@@ -61,6 +61,20 @@ function App(props) {
 	useEffect(() => {
 		waitingRef.current = waiting;
 	},[waiting]);
+
+	const [currentlyIgnoring,setCurrentlyIgnoring] = useState();
+	const ignore = id => {
+		setCurrentlyIgnoring(id);
+		fetch(`https://api.allorigins.win/get?url=https://${submittedInstance.current}.instructure.com/api/v1/users/self/todo/assignment_${id}/submitting?access_token=${submittedToken.current}&permanent=0`,{
+			method: 'DELETE'
+		})
+		.then(() => {
+			refresh();
+		})
+		.catch(e => {
+			alert(e);
+		});
+	}
 	
 	const refresh = useCallback(() => {
 		setLoading(true);
@@ -68,6 +82,7 @@ function App(props) {
 		.then(response => response.json())
 		.then(response => {
 			setLoading(false);
+			setCurrentlyIgnoring();
 			const contents = JSON.parse(response.contents);
 			update(contents);
 		})
@@ -266,7 +281,7 @@ function App(props) {
 										<span className="ml-2">All done!</span>
 									</div>
 								</div>
-							:courseList.map(course => <CourseTodo darkMode={darkMode} key={course} courseName={course} todoList={todo[course]} todo={todo} refresh={refresh} token={submittedToken.current} instance={submittedInstance.current} />)
+							:courseList.map(course => <CourseTodo darkMode={darkMode} key={course} courseName={course} todoList={todo[course]} todo={todo} refresh={refresh} loading={loading} currentlyIgnoring={currentlyIgnoring} ignore={ignore} />)
 						)
 						: ''
 				}

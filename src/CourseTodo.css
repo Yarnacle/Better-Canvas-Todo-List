@@ -17,3 +17,7 @@
 	opacity: 1;
 	transition: 0.5s;
 }
+
+.CourseTodo .delete-container .bulma-loader-mixin {
+	margin-bottom: 10px;
+}
