@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Better-Canvas-Todo-List/static/css/main.46384a4e.css",
-    "main.js": "/Better-Canvas-Todo-List/static/js/main.653aa374.js",
-    "static/js/787.2dc4bfe2.chunk.js": "/Better-Canvas-Todo-List/static/js/787.2dc4bfe2.chunk.js",
+    "main.css": "/Better-Canvas-Todo-List/static/css/main.6a9d857c.css",
+    "main.js": "/Better-Canvas-Todo-List/static/js/main.099b69bf.js",
+    "static/js/787.7e046223.chunk.js": "/Better-Canvas-Todo-List/static/js/787.7e046223.chunk.js",
     "index.html": "/Better-Canvas-Todo-List/index.html",
-    "main.46384a4e.css.map": "/Better-Canvas-Todo-List/static/css/main.46384a4e.css.map",
-    "main.653aa374.js.map": "/Better-Canvas-Todo-List/static/js/main.653aa374.js.map",
-    "787.2dc4bfe2.chunk.js.map": "/Better-Canvas-Todo-List/static/js/787.2dc4bfe2.chunk.js.map"
+    "main.6a9d857c.css.map": "/Better-Canvas-Todo-List/static/css/main.6a9d857c.css.map",
+    "main.099b69bf.js.map": "/Better-Canvas-Todo-List/static/js/main.099b69bf.js.map",
+    "787.7e046223.chunk.js.map": "/Better-Canvas-Todo-List/static/js/787.7e046223.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.46384a4e.css",
-    "static/js/main.653aa374.js"
+    "static/css/main.6a9d857c.css",
+    "static/js/main.099b69bf.js"
   ]
 }
