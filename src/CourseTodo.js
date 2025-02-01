@@ -5,7 +5,7 @@ function CourseTodo(props) {
 
 	return (
     <div className="CourseTodo">
-		<div className={'panel is-info' + (props.darkMode ? ' dark':'')}>
+		<div className={'panel is-info' }>
 			<p className="panel-heading">{ props.courseName }</p>
 			{ props.todoList.map(assignment => {
 				const dueDate = new Date(assignment.due_at);
@@ -13,8 +13,8 @@ function CourseTodo(props) {
 					<a className="panel-block" href={ assignment.html_url } target="_blank" rel="noreferrer" key="{ assignment.id }">
 						<div className="panel-block-container">
 							<div className="text">
-								<span className={'tag is-info ml-0 ' + (props.darkMode ? 'is-dark':'is-light')}>{ months[dueDate.getMonth()] } { dueDate.getDate() }</span>
-								<span className={'tag is-info ml-2 mr-2 ' + (props.darkMode ? 'is-dark':'is-light')}>{ dueDate.getHours() }:{ dueDate.getMinutes().toString().padStart(2,'0') }</span>
+								<span className={'tag is-info ml-0 is-light' }>{ months[dueDate.getMonth()] } { dueDate.getDate() }</span>
+								<span className={'tag is-info ml-2 mr-2 is-light' }>{ dueDate.getHours() }:{ dueDate.getMinutes().toString().padStart(2,'0') }</span>
 								<span>{ assignment.name }</span>
 							</div>
 							<div className="delete-container">

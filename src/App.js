@@ -4,6 +4,7 @@ import Error from './Error.js';
 import CourseTodo from './CourseTodo.js';
 import WaitingPopup from './WaitingPopup.js';
 import { Helmet } from 'react-helmet';
+import './light.css'
 
 function App(props) {
 	const mountRef = useRef(false);
@@ -220,7 +221,7 @@ function App(props) {
 	return (
 		<div className="App">
 			<Helmet>
-				<link type="text/css" rel="stylesheet" href={'https://unpkg.com/bulmaswatch/' + (darkMode ? 'darkly':'flatly') + '/bulmaswatch.min.css'} />
+				<link type="text/css" rel="stylesheet" href={'Better-Canvas-Todo-List/' + (darkMode ? 'dark.css':'light.css')} />
 			</Helmet>
 			{ waiting && <WaitingPopup /> }
 			<div className="box notification header">
@@ -287,7 +288,7 @@ function App(props) {
 				}
 			</div>
 			{lastUpdated.current &&
-				<div className={'notification refresh-status px-4 py-2 ' + (darkMode ? 'is-dark':'is-light')}>
+				<div className={'notification refresh-status px-4 py-2 ' + (darkMode ? 'darknotif':'')}>
 					<p>
 						{ loading ? <span className="bulma-loader-mixin"></span>
 							:<span onClick={refresh} className={'refresh-button icon is-small' + (darkMode ? ' dark':'')}>
