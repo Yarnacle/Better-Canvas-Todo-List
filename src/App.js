@@ -221,7 +221,7 @@ function App(props) {
 	return (
 		<div className="App">
 			<Helmet>
-				<link type="text/css" rel="stylesheet" href={'Better-Canvas-Todo-List/' + (darkMode ? 'dark.css':'light.css')} />
+				<link type="text/css" rel="stylesheet" href={(darkMode ? 'dark.css':'light.css')} />
 			</Helmet>
 			{ waiting && <WaitingPopup /> }
 			<div className="box notification header">
